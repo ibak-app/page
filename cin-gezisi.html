@@ -8672,6 +8672,7 @@
 
             // Intro overlay handler
             function hideIntro() {
+                if (introShown) return; // Prevent multiple calls
                 introOverlay.classList.add('hide');
                 introShown = true;
                 setTimeout(function() {
@@ -8679,12 +8680,13 @@
                 }, 400);
             }
 
+            // Touch/click to dismiss
             introOverlay.addEventListener('click', hideIntro);
             introOverlay.addEventListener('touchstart', hideIntro);
+            introOverlay.addEventListener('touchend', hideIntro);
 
-            setTimeout(function() {
-                if (!introShown) hideIntro();
-            }, 3000);
+            // Auto-hide after 2 seconds (fixes iPhone issues)
+            setTimeout(hideIntro, 2000);
 
             // Initialize
             buildTimeline();
